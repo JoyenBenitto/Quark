@@ -1,0 +1,29 @@
+#! /usr/bin/vvp
+:ivl_version "12.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 12;
+:vpi_module "/usr/lib64/ivl/system.vpi";
+:vpi_module "/usr/lib64/ivl/vhdl_sys.vpi";
+:vpi_module "/usr/lib64/ivl/vhdl_textio.vpi";
+:vpi_module "/usr/lib64/ivl/v2005_math.vpi";
+:vpi_module "/usr/lib64/ivl/va_math.vpi";
+:vpi_module "/usr/lib64/ivl/v2009.vpi";
+S_0x55bdb03fba50 .scope package, "$unit" "$unit" 2 1;
+ .timescale -9 -12;
+S_0x55bdb03fbbe0 .scope module, "or_gate" "or_gate" 3 1;
+ .timescale -9 -12;
+    .port_info 0 /INPUT 1 "a";
+    .port_info 1 /INPUT 1 "b";
+    .port_info 2 /OUTPUT 1 "y";
+o0x7f162779d018 .functor BUFZ 1, C4<z>; HiZ drive
+o0x7f162779d048 .functor BUFZ 1, C4<z>; HiZ drive
+L_0x55bdb040a380 .functor OR 1, o0x7f162779d018, o0x7f162779d048, C4<0>, C4<0>;
+v0x55bdb03d4330_0 .net "a", 0 0, o0x7f162779d018;  0 drivers
+v0x55bdb040a1a0_0 .net "b", 0 0, o0x7f162779d048;  0 drivers
+v0x55bdb040a260_0 .net "y", 0 0, L_0x55bdb040a380;  1 drivers
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "-";
+    "/home/joyenbenitto/Desktop/Quark/TBs/../build/verilog/or_gate.v";
