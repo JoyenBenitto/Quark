@@ -1,6 +1,0 @@
-<testsuites name="results">
-  <testsuite name="all" package="all">
-    <property name="random_seed" value="1694926761" />
-    <testcase name="mkstage1_test" classname="test_mkstage1" file="/home/joyenbenitto/Desktop/Quark/TBs/test_mkstage1.py" lineno="4" time="0.0008072853088378906" sim_time_ns="4.001" ratio_time="4956.116451269935" />
-  </testsuite>
-</testsuites>
