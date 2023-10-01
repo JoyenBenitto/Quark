@@ -2,3 +2,4 @@ TBs/__pycache__/
 .pytest_cache/
 TBs/results.xml
 TBs/sim_build/
+build/
