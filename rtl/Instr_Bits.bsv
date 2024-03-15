@@ -27,9 +27,23 @@ function Bit #(7) instr_funct7 (Bit #(32) instr);
  function Bit #(5) instr_rd (Bit #(32) instr);
     return instr [11:7];
  endfunction
-
-Bit #(7) opcode_BRANCH = 7'b_110_0011;
  
+ Bit #(7) opcode_BRANCH = 7'b_110_0011;
+ Bit #(7) opcode_LOAD = 7'b_000_0011;
+ Bit #(7) opcode_STORE = 7'b_010_0011;
+ Bit #(7) opcode_AMO = 7'b_010_1111;
+ Bit #(7) opcode_OP = 7'b_011_0011;
+ Bit #(7) opcode_OP_IMM = 7'b_001_0011;
+ // Checks if the instruction is a branching inst
+function Bool is_legal_BRANCH (Bit #(32) instr);
+    let funct3 = isntr_func3(instr);
+    return ((instr_opcode (instr) == opcode_BRANCH)
+            && (funct3 != 3'b010) 
+            && (funct3 != 3'b011));
+endfunction
+
+
+// Checks if the instruction is a R type
 function Bool is_legal_BRANCH (Bit #(32) instr);
     let funct3 = isntr_func3(instr);
     return ((instr_opcode (instr) == opcode_BRANCH)
