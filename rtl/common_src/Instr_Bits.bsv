@@ -34,6 +34,10 @@ function Bit #(7) instr_funct7 (Bit #(32) instr);
  Bit #(7) opcode_AMO = 7'b_010_1111;
  Bit #(7) opcode_OP = 7'b_011_0011;
  Bit #(7) opcode_OP_IMM = 7'b_001_0011;
+
+ Bit #(5) funct5_LOAD = 5'b_11110;
+ Bit #(5) funct5_STORE = 5'b_11111;
+ Bit #(5) funct5_FENCE = 5'b_11101;
  // Checks if the instruction is a branching inst
 function Bool is_legal_BRANCH (Bit #(32) instr);
     let funct3 = isntr_func3(instr);
