@@ -1,8 +1,0 @@
-include makefile.inc
-
-BSCCMD := bsc -verilog $() -vdir $()
-BSCINCDIR := 
-
-.PHONY: generate_verilog
-generate_verilog:
-	@echo "Generating Verilog"

@@ -16,7 +16,10 @@ typedef enum {
     OPCLASS_FENCE
 }OpClass deriving (Bits, Eq, FShow)
 
-typedef struct {Bit #(XLEN) pc;
+typedef struct {
+    Bit #(XLEN) pc;
+    Bit #(64) inum; // for debugging only
+ } Fetch_to_Decode deriving (Bits, FShow);
 
 Bool exception;
 Bit #(4) cause;
