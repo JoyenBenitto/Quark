@@ -36,17 +36,23 @@ function Bit #(7) instr_funct7 (Bit #(32) instr);
 //=====[Funtions that returns true for a particular type of instruction]=======
 
 // Checks if the instruction is a R type
-function Bool is_legal_R()
+function Bool is_OP(Bit #(32) instr);
+   return(instr_opcode(isnt) == `OP)
+endfunction
 // Checks if the instruction is a I type
-// Checks if the instruction is a s type
-// Checks if the instruction is a B type
-// Checks if the instruction is a u type
+function Bool is_OP_IMM(Bit #(32) instr);
+   return(instr_opcode(isnt) == `OP_IMM)
+endfunction
+// Checks if the instruction is a store instruction
+function Bool is_OP_S(Bit #(32) instr);
+   return(instr_opcode(isnt) == `OP_STORE)
+endfunction
 
 // Checks if the instruction is a branching instruction(B-Type)
 function Bool is_legal_BRANCH (Bit #(32) instr);
    /*Checks if the provided function is a branch instruction*/ 
    let funct3 = isntr_func3(instr);
-   return ((instr_opcode (instr) == `opcode_BRANCH)
+   return ((instr_opcode(instr) == `OP_BRANCH)
             && (funct3 != 3'b010) 
             && (funct3 != 3'b011));
 endfunction
