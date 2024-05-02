@@ -5,6 +5,7 @@ default: sim
 .PHONY: sim
 sim:
 	@echo "Running sim cmd"
-	@bsc -u -sim $(TOPFILE_DIR)/$(TOPFILE)
-	@bsc -sim -e $(TOP_MODULE) -o build/Bin/$(TOP_MODULE)
-	@./build/Bin/$(TOP_MODULE)
+	@bsc -sim -p $(BSCINCDIR) -vdir $(VERILOGDIR) -bdir $(BDIR) -info-dir $(BSVBUILDDIR) -g $(TOP_MODULE) $(TOPFILE_DIR)/$(TOPFILE)
+	@echo "elabs"
+	@bsc -sim -e $(TOP_MODULE) -o build/bin/exe_$(TOP_MODULE) build/intermediate/mkTop.ba
+	@./build/bin/exe_$(TOP_MODULE)
