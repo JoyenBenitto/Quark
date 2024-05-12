@@ -148,7 +148,7 @@ module mkTop (Empty);
          Bit #(32) instr_S = {7'h0, 5'h9, 5'h8, 3'b000, 5'h3, 7'b_110_0011};
 
          $display ("instr_R %08h => %0d", instr_R, is_legal_OP(instr_R));
-         //$display ("instr_IMM %08h => %0d", instr_IMM, is_OP_IMM(instr_IMM));
+         $display ("instr_IMM %08h => %0d", instr_IMM, is_legal_OP_IMM(instr_IMM));
          $display ("instr_S %08h => %0d", instr_S, is_legal_STORE(instr_S));
          endaction
       endseq);
