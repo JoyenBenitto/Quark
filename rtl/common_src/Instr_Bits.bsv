@@ -32,6 +32,39 @@ function Bit #(5) instr_rd (Bit #(32) instr);
    return instr [11:7];
 endfunction
 
+//==========================[Extracting Immediates]============================
+function Bit#(12) instr_imm_I (Bit #(32) instr);
+   return instr[31:20];
+endfunction
+
+function Bit#(12) instr_imm_S (Bit #(32) instr);
+   Bit #(7) offset_11_5 = instr[31:25];
+   Bit #(5) offset_4_0 = instr[11:7];
+   return {offset_11_5, offset_4_0};
+endfunction
+
+function Bit#(13) instr_imm_B (Bit #(32) instr)
+   Bit #(1) offset_11 = instr[7]
+   Bit #(1) offset_12 = instr[31]
+   Bit #(4) offset_4_1 = instr[11:8]
+   Bit #(6) offset_10_5 = instr[30:25]
+   return {offset_12, offset_11, offset_10_5, offset_4_1, 1'b0};
+endfunction
+
+function Bit #(20) instr_imm_U (Bit #(32) instr);
+   return instr [31:12];
+endfunction
+
+function Bit #(21) instr_imm_J (Bit #(32) instr);
+   // instr [31:12] = imm[20|10:1|11|19:12]
+   Bit #(1)  imm_20    = instr [31];
+   Bit #(10) imm_10_1  = instr [30:21];
+   Bit #(1)  imm_11    = instr [20];
+   Bit #(8)  imm_19_12 = instr [19:12];
+
+   return { imm_20, imm_19_12, imm_11, imm_10_1, 1'b0 };
+endfunction
+
 
 //=====[Funtions that returns true for a particular type of instruction]=======
 
@@ -64,7 +97,7 @@ module mkTop (Empty);
       seq
          action
          Bit #(32) instr_R = {7'h0, 5'h9, 5'h8, 3'b000, 5'h3, 7'b_011_0011};
-         Bit #(32) instr_IMM = {7'h0, 5'h9, 5'h8, 3'b000, 5'h3, 7'b_110_0011};
+         Bit #(32) instr_IMM = {7'h0, 5'h9, 5'h8, 3'b000, 5'h3, 7'b_001_0011};
          Bit #(32) instr_S = {7'h0, 5'h9, 5'h8, 3'b000, 5'h3, 7'b_110_0011};
 
          $display ("instr_R %08h => %0d", instr_R, is_OP(instr_R));
