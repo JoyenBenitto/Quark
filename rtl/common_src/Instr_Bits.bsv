@@ -11,7 +11,7 @@ function Bit #(7) instr_opcode (Bit #(32) instr);
     return instr[6:0];
 endfunction
 
-function Bit #(3) isntr_func3 (Bit #(32) instr);
+function Bit #(3) instr_funct3 (Bit #(32) instr);
     return instr[14:12];
 endfunction
 
@@ -43,11 +43,11 @@ function Bit#(12) instr_imm_S (Bit #(32) instr);
    return {offset_11_5, offset_4_0};
 endfunction
 
-function Bit#(13) instr_imm_B (Bit #(32) instr)
-   Bit #(1) offset_11 = instr[7]
-   Bit #(1) offset_12 = instr[31]
-   Bit #(4) offset_4_1 = instr[11:8]
-   Bit #(6) offset_10_5 = instr[30:25]
+function Bit#(13) instr_imm_B (Bit #(32) instr);
+   Bit #(1) offset_11 = instr[7];
+   Bit #(1) offset_12 = instr[31];
+   Bit #(4) offset_4_1 = instr[11:8];
+   Bit #(6) offset_10_5 = instr[30:25];
    return {offset_12, offset_11, offset_10_5, offset_4_1, 1'b0};
 endfunction
 
@@ -68,29 +68,67 @@ endfunction
 
 //=====[Funtions that returns true for a particular type of instruction]=======
 
-// Checks if the instruction is a R type
-function Bool is_OP(Bit #(32) instr);
-   return(instr_opcode(instr) == `OP);
-endfunction
-// Checks if the instruction is a I type
-function Bool is_OP_IMM(Bit #(32) instr);
-   return(instr_opcode(instr) == `OP_IMM);
-endfunction
-// Checks if the instruction is a store instruction
-function Bool is_OP_S(Bit #(32) instr);
-   return(instr_opcode(instr) == `OP_STORE);
-endfunction
-
 // Checks if the instruction is a branching instruction(B-Type)
 function Bool is_legal_BRANCH (Bit #(32) instr);
    /*Checks if the provided function is a branch instruction*/ 
-   let funct3 = isntr_func3(instr);
+   let funct3 = instr_funct3(instr);
    return ((instr_opcode(instr) == `OP_BRANCH)
             && (funct3 != 3'b010) 
             && (funct3 != 3'b011));
 endfunction
 
-//Test module
+// Check is the instruction is a store instruction
+function Bool is_legal_STORE (Bit #(32) instr);
+   let funct3 = instr_funct3(instr);
+   return ((instr_opcode(instr) == `OP_STORE)
+            && ((funct3 == `FUNCT3_SB)
+              ||(funct3 == `FUNCT3_SH)
+              ||(funct3 == `FUNCT3_SW)));
+endfunction
+
+//Check if the intruction is a LUI
+function Bool is_legal_LUI (Bit #(32) instr);
+   return (instr_opcode (instr) == `OP_LUI);
+endfunction
+
+//Check if the instruction is a AUIPC
+function Bool is_legal_AUIPC (Bit #(32) instr);
+   return (instr_opcode (instr) == `OP_AUIPC);
+endfunction
+
+//Check if the instruction is a JALR
+function Bool is_legal_JALR (Bit #(32) instr);
+   return (instr_opcode (instr) == `OP_JALR);
+endfunction
+
+function Bool is_legal_LOAD (Bit #(32) instr);
+   let funct3 = instr_funct3 (instr);
+   return ((instr_opcode (instr) == `OP_LOAD)
+	   && ((funct3 == `FUNCT3_LB)
+	      || (funct3 == `FUNCT3_LH)
+	      || (funct3 == `FUNCT3_LW)
+	      || (funct3 == `FUNCT3_LBU)
+	      || (funct3 == `FUNCT3_LHU)));
+endfunction
+
+function Bool is_legal_OP (Bit #(32) instr);
+   let funct3 = instr_funct3 (instr);
+   let funct7 = instr_funct7 (instr);
+   return ((instr_opcode (instr) == `OP)
+	   && ((funct3 == `FUNCT3_ADD)  && (funct7 == `FUNCT7_ADD)
+	      ||(funct3 == `FUNCT3_SUB)  && (funct7 == `FUNCT7_SUB)
+	      ||(funct3 == `FUNCT3_SLL)  && (funct7 == `FUNCT7_SLL)
+	      ||(funct3 == `FUNCT3_SLT)  && (funct7 == `FUNCT7_SLT)
+	      ||(funct3 == `FUNCT3_SLTU) && (funct7 == `FUNCT7_SLTU)
+	      ||(funct3 == `FUNCT3_XOR)  && (funct7 == `FUNCT7_XOR)
+	      ||(funct3 == `FUNCT3_SRL)  && (funct7 == `FUNCT7_SRL)
+	      ||(funct3 == `FUNCT3_SRA)  && (funct7 == `FUNCT7_SRA)
+	      ||(funct3 == `FUNCT3_OR)   && (funct7 == `FUNCT7_OR)
+	      ||(funct3 == `FUNCT3_AND)  && (funct7 == `FUNCT7_AND)));
+endfunction
+
+
+//====================================Test module=============================
 (*synthesize*)
 module mkTop (Empty); 
    mkAutoFSM (
@@ -100,9 +138,9 @@ module mkTop (Empty);
          Bit #(32) instr_IMM = {7'h0, 5'h9, 5'h8, 3'b000, 5'h3, 7'b_001_0011};
          Bit #(32) instr_S = {7'h0, 5'h9, 5'h8, 3'b000, 5'h3, 7'b_110_0011};
 
-         $display ("instr_R %08h => %0d", instr_R, is_OP(instr_R));
-         $display ("instr_IMM %08h => %0d", instr_IMM, is_OP_IMM(instr_IMM));
-         $display ("instr_S %08h => %0d", instr_S, is_OP_S(instr_S));
+         $display ("instr_R %08h => %0d", instr_R, is_legal_OP(instr_R));
+         //$display ("instr_IMM %08h => %0d", instr_IMM, is_OP_IMM(instr_IMM));
+         $display ("instr_S %08h => %0d", instr_S, is_legal_STORE(instr_S));
          endaction
       endseq);
 endmodule

@@ -1,12 +1,6 @@
 package Inter_Stage;
 
-include Inter_Stage :: *;
-
-'ifdef RV32
-    typedef 32 XLEN;
-'elif RV64
-    typedef 64 XLEN; 
-'endif
+include Instr_Stage
 
 typedef enum {
     OPCLASS_SYSTEM,
