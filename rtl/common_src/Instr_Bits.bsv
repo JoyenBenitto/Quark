@@ -127,6 +127,15 @@ function Bool is_legal_OP (Bit #(32) instr);
 	      ||(funct3 == `FUNCT3_AND)  && (funct7 == `FUNCT7_AND)));
 endfunction
 
+function Bool is_legal_OP_IMM (Bit #(32) instr);
+   let funct3 = instr_funct3 (instr);
+   let funct7 = instr_funct7 (instr);
+   Bool is_legal_SLLI = (funct7 == 7'b000_0000);
+   Bool is_legal_SRxI = ((funct7 == 7'b010_0000)||(funct7 == 7'b000_0000));
+   return ((instr_opcode (instr) == `OP_IMM)
+	   && ((funct3 == `FUNCT3_SLLI) ? is_legal_SLLI : 
+      ((funct3 == `FUNCT3_SRxI) ? is_legal_SRxI : True)));
+endfunction
 
 //====================================Test module=============================
 (*synthesize*)

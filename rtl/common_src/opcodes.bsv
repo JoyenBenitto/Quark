@@ -58,6 +58,7 @@
 `define FUNCT3_SLL  3'b_001
 `define FUNCT3_SLT  3'b_010
 `define FUNCT3_SLTU 3'b_011
+`define FUNCT3_SRxI 3'b_101
 `define FUNCT3_XOR  3'b_100
 `define FUNCT3_SRL  3'b_101
 `define FUNCT3_SRA  3'b_101
