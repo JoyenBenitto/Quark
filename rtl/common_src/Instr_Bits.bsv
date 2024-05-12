@@ -96,6 +96,10 @@ function Bool is_legal_AUIPC (Bit #(32) instr);
    return (instr_opcode (instr) == `OP_AUIPC);
 endfunction
 
+function Bool is_legal_JAL (Bit #(32) instr);
+   return (instr_opcode (instr) == `OP_JAL);
+endfunction
+
 //Check if the instruction is a JALR
 function Bool is_legal_JALR (Bit #(32) instr);
    return (instr_opcode (instr) == `OP_JALR);
@@ -127,6 +131,7 @@ function Bool is_legal_OP (Bit #(32) instr);
 	      ||(funct3 == `FUNCT3_AND)  && (funct7 == `FUNCT7_AND)));
 endfunction
 
+//TODO: Move these func7s to the opcodes.bsv file
 function Bool is_legal_OP_IMM (Bit #(32) instr);
    let funct3 = instr_funct3 (instr);
    let funct7 = instr_funct7 (instr);
