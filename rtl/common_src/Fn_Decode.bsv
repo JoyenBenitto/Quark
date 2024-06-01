@@ -11,5 +11,18 @@ typedef struct {
 } Result_Dispatch
 deriving (Bits, FShow);
 
+function ActionValue #(Decode_to_RR) fn_Decode(
+	Fetch_to_Decode x_F_to_D,
+	Mem_Rsp rsp_IMem,
+	File flog
+)
+
+	actionvalue
+		Bit#(32) instr = truncate(rsp_IMem.data);
+		Bit#(5) rd = isntr_rd(isntr);
+
+		let fallthru_pc = x_F_to_D.pc + 4;
+	endactionvalue
+endfunction
 
 endpackage: Fn_Decode
