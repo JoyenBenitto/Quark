@@ -9,3 +9,7 @@ sim:
 	@echo "elabs"
 	@bsc -sim -e $(TOP_MODULE) -o build/bin/exe_$(TOP_MODULE) build/intermediate/mkTop.ba
 	@./build/bin/exe_$(TOP_MODULE)
+
+verilog:
+	@echo "Compiling verilog"
+	@bsc -verilog -p $(BSCINCDIR) -vdir $(VERILOGDIR) -bdir $(BDIR) -info-dir $(BSVBUILDDIR) -g $(TOP_MODULE) $(TOPFILE_DIR)/$(TOPFILE)
